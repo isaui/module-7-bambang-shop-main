@@ -48,15 +48,15 @@ You can install Postman via this website: https://www.postman.com/downloads/
     (You might want to use `cargo check` if you only need to verify your work without running the app.)
 
 ## Mandatory Checklists (Publisher)
--   [ ] Clone https://gitlab.com/ichlaffterlalu/bambangshop to a new repository.
+-   [x] Clone https://gitlab.com/ichlaffterlalu/bambangshop to a new repository.
 -   **STAGE 1: Implement models and repositories**
-    -   [ ] Commit: `Create Subscriber model struct.`
-    -   [ ] Commit: `Create Notification model struct.`
-    -   [ ] Commit: `Create Subscriber database and Subscriber repository struct skeleton.`
-    -   [ ] Commit: `Implement add function in Subscriber repository.`
-    -   [ ] Commit: `Implement list_all function in Subscriber repository.`
-    -   [ ] Commit: `Implement delete function in Subscriber repository.`
-    -   [ ] Write answers of your learning module's "Reflection Publisher-1" questions in this README.
+    -   [x] Commit: `Create Subscriber model struct.`
+    -   [x] Commit: `Create Notification model struct.`
+    -   [x] Commit: `Create Subscriber database and Subscriber repository struct skeleton.`
+    -   [x] Commit: `Implement add function in Subscriber repository.`
+    -   [x] Commit: `Implement list_all function in Subscriber repository.`
+    -   [x] Commit: `Implement delete function in Subscriber repository.`
+    -   [x] Write answers of your learning module's "Reflection Publisher-1" questions in this README.
 -   **STAGE 2: Implement services and controllers**
     -   [ ] Commit: `Create Notification service struct skeleton.`
     -   [ ] Commit: `Implement subscribe function in Notification service.`
@@ -77,7 +77,10 @@ This is the place for you to write reflections:
 ### Mandatory (Publisher) Reflections
 
 #### Reflection Publisher-1
-
+1. Penggunaan single model struct sudah cukup. Hal tersebut karena publisher berinteraksi hanya dengan satu tipe observer maka penggunaan single model struct sudah cukup karena tidak perlu polimorfisme.
+2. Penggunaan DashMap disini penting karena kita tahu bahwa id di Program dan url di Subscriber itu unik sehingga kita dapat mempercepat operasi insert, lookup, dan deletion data Program maupun Subscriber dengan kompleksitas O(1), daripada Vec yang mana memperlukan kompleksitas O(N). Itu termasuk pengoptimalan algoritma sehingga dapat mengoptimalkan performa aplikasi rust ini.
+3. Kita tetap membutuhkan DashMap, meskipun kita sudah mengimplementasikan singleton pattern yang mana tentu saja struktur data yang ada di dalam singleton itu harus thread safe juga karena singleton tidak sepenuhnya menjamin thread safe. Oleh karena itu diperlukan penggunaan DashMap.
+4. Dalam usecase saat ini, menggunakan lazy static variabel yang berisi dashmap dirasa sudah cukup karena dashmap dapat diakses secara thread safe. Selain itu, meskipun seandainya kita mengimplementasikan singleton, itu juga belum menjamin thread safe sehingga dalam singleton tersebut perlu mekanisme thread safe salah satunya dengan menggunakan struktur data yang bersifat thread safety contohnya DashMap.
 #### Reflection Publisher-2
 
 #### Reflection Publisher-3
