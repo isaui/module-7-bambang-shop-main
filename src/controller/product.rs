@@ -14,6 +14,14 @@ pub fn create(product: Json<Product>) -> Result<Created<Json<Product>>> {
     };
 }
 
+#[post("/<id>/publish")]
+pub fn publish(id: usize) -> Result<Json<Product>>{
+    return match ProductService::publish(id) {
+        Ok(f) => Ok(Json::from(f)),
+        Err(e) => Err(e)
+    }
+}
+
 #[get("/")]
 pub fn list() -> Result<Json<Vec<Product>>> {
     return match ProductService::list() {
