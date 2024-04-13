@@ -8,11 +8,10 @@ use  crate::service::notification::NotificationService;
 use crate::service::product::ProductService;
 
 #[post("/subscribe/<product_type>", data = "<subscriber>")]
-pub fn subscribe(product_type: &str, subscriber: Subscriber) -> Result<Subscriber>{
-    let product_type_upper: String = product_type.to_uppercase();
-    let product_type_str: &str = product_type_upper.as_str();
-    let subscriber_result: Subscriber =
-        SubscriberRepository::add(product_type_str, subscriber);
-    return Ok(subscriber_result);
+pub fn subscribe(product_type: &str, subscriber: Json<Subscriber>) -> Result<Created<Json<Subscriber>>>{
+    return match NotificationService::subscribe(product_type, subscriber.into_inner() ) {
+        Ok(f) => Ok(Created::new("/").body(Json::from(f))),
+        Err(e) => Err(e)
+    }
 }
 
