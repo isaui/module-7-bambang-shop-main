@@ -31,21 +31,22 @@ impl NotificationService {
     }
 
     pub fn notify(&self, product_type: &str, status: &str, product: Product){
-        let mut payload: Notification = Notification{
-            product_type: String::from(product_type),
-            product_title: product.clone().title,
-            product_url: product.clone().get_url(),
-
-            subscriber_name: "".to_string(),
-            status: String::from(status),
-        };
-
         let subscribers: Vec<Subscriber> = SubscriberRepository::list_all(product_type);
-        for subscriber in subscribers{
-            payload.subscriber_name = subscriber.clone().name;
-            thread::spawn( move || {
-                subscriber.clone().update(payload.clone());
-            })
+
+        for subscriber in subscribers {
+            let payload: Notification = Notification {
+                product_type: String::from(product_type),
+                product_title: product.clone().title,
+                product_url: product.clone().get_url(),
+
+                subscriber_name: subscriber.name.clone(),
+                status: String::from(status),
+            };
+
+            thread::spawn(move || {
+                subscriber.update(payload);
+            });
         }
     }
+
 }
